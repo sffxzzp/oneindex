@@ -17,14 +17,18 @@
 
 <script src="https://cdn.bootcss.com/ace/1.2.9/ace.js"></script>
 <script src="https://cdn.bootcss.com/ace/1.2.9/ext-language_tools.js"></script>
+<script src="https://cdn.bootcss.com/ace/1.2.9/theme-github.js"></script>
 <script>
     var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/ambiance");
-    editor.setFontSize(18);
+    editor.setTheme("ace/theme/github");
+    editor.setFontSize(14);
     editor.session.setMode("ace/mode/<?php e($language);?>");
     
     //Autocompletion
     editor.setOptions({
+        selectionStyle: "line",
+        highlightActiveLine: true,
+        highlightSelectedWord: true,
         enableBasicAutocompletion: true,
         enableSnippets: true,
         enableLiveAutocompletion: true,
