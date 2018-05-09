@@ -1,6 +1,6 @@
 <?php 
 if( php_sapi_name() !== "cli" ){
-   die( "NoAccess" );
+    die( "NoAccess" );
 }
 require 'init.php';
 ini_set('memory_limit', '128M');

@@ -4,6 +4,7 @@
 <link class="dplayer-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/dashjs/dist/dash.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
+<script src="view/js/subtitles-octopus.js"></script>
 <div class="mdui-container-fluid">
 	<br>
 	<div id="dplayer"></div>
@@ -27,6 +28,21 @@ const dp = new DPlayer({
 	    pic: '<?php @e($item['thumb'].'&width=176&height=176');?>',
 	    type: 'dash'
 	}
+});
+dp.on('canplay', function () {
+    var video = document.getElementsByTagName('video')[0];
+    window.SubtitlesOctopusOnLoad = function () {
+        var options = {
+            video: video,
+            subUrl: '<?php $urlparts = pathinfo($url); e($urlparts['dirname'].'/'.$urlparts['filename'].'.ass');?>',
+            fonts: ["//gapis.geekzu.org/g-fonts/ea/notosanstc/v1/NotoSansTC-Regular.otf"],
+            workerUrl: 'view/js/subtitles-octopus-worker.js'
+        };
+        window.octopusInstance = new SubtitlesOctopus(options);
+    };
+    if (SubtitlesOctopus) {
+        SubtitlesOctopusOnLoad();
+    }
 });
 </script>
 <a href="<?php e($url);?>" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
