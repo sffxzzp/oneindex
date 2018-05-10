@@ -34,7 +34,7 @@ dp.on('canplay', function () {
         var options = {
             video: video,
             subUrl: '<?php $urlparts = pathinfo($url); e($urlparts['dirname'].'/'.$urlparts['filename'].'.ass');?>',
-            fonts: ["//gapis.geekzu.org/g-fonts/ea/notosanstc/v1/NotoSansTC-Regular.otf"],
+            fonts: ["//gapis.geekzu.org/g-fonts/ea/notosanssc/v1/NotoSansSC-Regular.otf", "//gapis.geekzu.org/g-fonts/ea/notosanstc/v1/NotoSansTC-Regular.otf", "//gapis.geekzu.org/g-fonts/ea/notosansjapanese/v6/NotoSansJP-Regular.otf"],
             workerUrl: 'view/js/subtitles-octopus-worker.js'
         };
         window.octopusInstance = new SubtitlesOctopus(options);
