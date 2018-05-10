@@ -21,6 +21,7 @@
 </div>
 <script>
 var dp;
+var mode=0;
 function loadPlayer(mode) {
     if (mode==0) {
         dp = new DPlayer({
@@ -64,10 +65,11 @@ function subtitle() {
 }
 function modeSwitch() {
     dp.destroy();
-    loadPlayer(1);
+    mode == 0 ? mode = 1 : mode = 0;
+    loadPlayer(mode);
     subtitle();
 };
-loadPlayer(0);
+loadPlayer(mode);
 subtitle();
 </script>
 
