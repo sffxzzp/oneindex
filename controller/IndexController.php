@@ -148,7 +148,9 @@ class IndexController{
 			return view::load('show/code')->with($data);
 		}
 
-		header('Location: '.$item['downloadUrl']);
+		return view::load('show/others')->with($data);
+
+		//header('Location: '.$item['downloadUrl']);
 	}
 	//ËõÂÔÍ¼
 	function thumbnail($item){
