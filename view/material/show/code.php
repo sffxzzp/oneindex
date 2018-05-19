@@ -1,7 +1,7 @@
 <?php view::layout('layout')?>
 
 <?php view::begin('content');?>
-<script src="view/js/qrcode.min.js"></script>
+<script src="<?php e($root);?>view/js/qrcode.min.js"></script>
 <style type="text/css" media="screen">
 	#editor { 
 		/*height:800px;*/

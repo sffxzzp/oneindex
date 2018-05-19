@@ -117,7 +117,9 @@ class IndexController{
 		$data['title'] = $item['name'];
 		$data['navs'] = $this->navs();
 		$data['item'] = $item;
-		$data['url'] = (isset($_SERVER['HTTPS'])?'https://':'http://').$_SERVER['HTTP_HOST'].end($data['navs']);
+		$http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+		$data['url'] = $http_type.$_SERVER['HTTP_HOST'].end($data['navs']);
+		$data['root'] = get_absolute_path(dirname($_SERVER['SCRIPT_NAME']));
 
 		if(in_array($ext,['csv','doc','docx','odp','ods','odt','pot','potm','potx','pps','ppsx','ppsxm','ppt','pptm','pptx','rtf','xls','xlsx'])){
 			$url = 'https://view.officeapps.live.com/op/view.aspx?src='.urlencode($item['downloadUrl']);
@@ -148,9 +150,7 @@ class IndexController{
 			return view::load('show/code')->with($data);
 		}
 
-		return view::load('show/others')->with($data);
-
-		//header('Location: '.$item['downloadUrl']);
+		header('Location: '.$item['downloadUrl']);
 	}
 	//ËõÂÔÍ¼
 	function thumbnail($item){
