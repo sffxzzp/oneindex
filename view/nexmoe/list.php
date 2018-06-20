@@ -18,14 +18,13 @@ function file_ico($item){
 <?php view::begin('content');?>
 	
 <div class="mdui-container-fluid">
-
 <?php if($head):?>
 <div class="mdui-typo" style="padding: 20px;">
 	<?php e($head);?>
 </div>
 <?php endif;?>
 
-	
+<div class="nexmoe-item">
 <div class="mdui-row">
 	<ul class="mdui-list">
 		<li class="mdui-list-item th">
@@ -73,6 +72,7 @@ function file_ico($item){
 			<?php endif;?>
 		<?php endforeach;?>
 	</ul>
+</div>
 </div>
 <?php if($readme):?>
 <div class="mdui-typo mdui-shadow-3" style="padding: 20px;margin: 20px; 0">

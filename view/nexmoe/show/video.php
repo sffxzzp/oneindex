@@ -6,9 +6,9 @@ $item['thumb'] = onedrive::thumbnail($item['path']);
 <link class="dplayer-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
 <div class="mdui-container-fluid">
-	<br>
-	<div id="dplayer"></div>
-	<br>
+	<div class="nexmoe-item">
+	<div class="mdui-center" id="dplayer"></div>
+	
 	<!-- 固定标签 -->
 	<div class="mdui-textfield">
 	  <label class="mdui-textfield-label">下载地址</label>
@@ -17,6 +17,7 @@ $item['thumb'] = onedrive::thumbnail($item['path']);
 	<div class="mdui-textfield">
 	  <label class="mdui-textfield-label">引用地址</label>
 	  <textarea class="mdui-textfield-input"><video><source src="<?php e($url);?>" type="video/mp4"></video></textarea>
+	</div>
 	</div>
 </div>
 <script>
