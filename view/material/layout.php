@@ -71,8 +71,6 @@
 			<i class="mdui-icon material-icons mdui-icon-dark" style="margin:0;">chevron_right</i>
 			<a href="<?php e($l);?>"><?php e($n);?></a>
 			<?php endforeach;?>
-			<div class="mdui-toolbar-spacer"></div>
-			<a href="<?php echo config('app_url'); ?>" target="_blank" class="mdui-btn mdui-ripple">OneDrive</a>
 			<!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>-->
 		</div>
 	</header>

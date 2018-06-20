@@ -15,6 +15,10 @@
 	  <input class="mdui-textfield-input" type="text" value="<img src='<?php e($url);?>' />"/>
 	</div>
 	<div class="mdui-textfield">
+	  <label class="mdui-textfield-label">Markdown 引用地址</label>
+	  <input class="mdui-textfield-input" type="text" value="![](<?php e($url);?>)"/>
+	</div>
+	<div class="mdui-textfield">
 		<label class="mdui-textfield-label">二维码</label><br>
 		<div id="qrcode"></div>
 	</div>
