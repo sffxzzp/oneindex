@@ -4,7 +4,7 @@
 	
 <div class="mdui-container-fluid">
 	<div class="mdui-typo">
-	  <h1>系统安装 <small>环境检测</small></h1>
+	  <h1>程序安装 <small>环境检测</small></h1>
 	</div>
 
 	<div class="mdui-table-fluid">
@@ -19,7 +19,7 @@
 	    <tbody>
 	      <tr>
 	        <td>1</td>
-	        <td>PHP > 5.6</td>
+	        <td>PHP > 5.5</td>
 	        <?php if($check['php']): ?>
 	        <td><i class="mdui-icon material-icons" style="color:#4caf50;">&#xe5ca;</i></td>
 	        <?php else:?>

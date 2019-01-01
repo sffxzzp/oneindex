@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
 	<title>OneIndex 系统管理</title>
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/mdui/0.4.1/css/mdui.min.css">
-	<script src="//cdnjs.cloudflare.com/ajax/libs/mdui/0.4.1/js/mdui.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.1/dist/css/mdui.min.css" integrity="sha256-lCFxSSYsY5OMx6y8gp8/j6NVngvBh3ulMtrf4SX5Z5A=" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/mdui@0.4.1/dist/js/mdui.min.js" integrity="sha256-dZxrLDxoyEQADIAGrWhPtWqjDFvZZBigzArprSzkKgI=" crossorigin="anonymous"></script>
 	<script>$ = mdui.JQ;</script>
 </head>
 <body class="mdui-drawer-body-left mdui-appbar-with-toolbar  mdui-theme-primary-indigo mdui-theme-accent-blue">
@@ -50,9 +50,9 @@
       <div class="mdui-list-item-content">密码修改</div>
     </a>
 
-    <a href="https://onedrive.live.com/" class="mdui-list-item" target="_blank">
+    <a href="https://www.office.com/login" class="mdui-list-item" target="_blank">
       <i class="mdui-list-item-icon mdui-icon material-icons">&#xe2bf;</i>
-      <div class="mdui-list-item-content">文件管理(onedrive)</div>
+      <div class="mdui-list-item-content">文件管理(OneDrive)</div>
     </a>
   </div>
 </div>
@@ -64,6 +64,8 @@
 </div>
 <script>
 	$("a[href='<?php echo'?'.(route::get_uri());?>']").addClass("mdui-text-color-blue");
+  // 消息提示
+  <?php echo (isset($message) && !empty($message)) ? "mdui.snackbar({position: 'right-top', message: '{$message}'});" : '';?>
 </script>
 </body>
 

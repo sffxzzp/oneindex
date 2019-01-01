@@ -6,6 +6,7 @@ class AdminController{
 	  'password' => 'oneindex',
 	  'style'=>'material',
 	  'onedrive_root' =>'',
+	  'cache_type'=>'secache',
 	  'cache_expire_time' => 3600,
 	  'cache_refresh_time' => 600,
 	  'root_path' => '?',
@@ -19,7 +20,7 @@ class AdminController{
 	    'code'=>['html','htm','php', 'css', 'go','java','js','json','txt','sh','md'],
 	    'doc'=>['csv','doc','docx','odp','ods','odt','pot','potm','potx','pps','ppsx','ppsxm','ppt','pptm','pptx','rtf','xls','xlsx']
 	  ),
-	  'images'=>['home'=>false,'public'=>false, exts=>['jpg','png','gif','bmp']]
+	  'images'=>['home'=>false,'public'=>false, 'exts'=>['jpg','png','gif','bmp']]
 	);
 	
 	function __construct(){
@@ -30,7 +31,7 @@ class AdminController{
 			setcookie('admin', md5(config('password').config('refresh_token')) );
 			return view::direct(get_absolute_path(dirname($_SERVER['SCRIPT_NAME'])).'?/admin/');
 		}
-		return view::load('login');
+		return view::load('login')->with('title', '系统管理');
 	}
 
 	function logout(){
@@ -39,33 +40,59 @@ class AdminController{
 	}
 
 	function settings(){
-		
+		$message = false;
+
 		if($_POST){
-
-			config('site_name',$_POST['site_name']);
-			config('style',$_POST['style']);
 			
-			config('onedrive_root',get_absolute_path($_POST['onedrive_root']));
+			if ($this->cache_exists($_POST['cache_type'])) {
+				$message = '保存成功';
+				config('cache_type', $_POST['cache_type']);
+			} else {
+				$message = '缓存类型不可用，请确认已经安装了该拓展。';
+				config('cache_type', 'secache');
+			}
 
-			config('cache_expire_time',intval($_POST['cache_expire_time']));
-
+			config('site_name', $_POST['site_name']);
+			config('style', $_POST['style']);
+			config('onedrive_root', get_absolute_path($_POST['onedrive_root']));
+			config('onedrive_hide', $_POST['onedrive_hide']);
+			config('onedrive_hotlink', $_POST['onedrive_hotlink']);
+			config('cache_expire_time', intval($_POST['cache_expire_time']));
 			$_POST['root_path'] = empty($_POST['root_path'])?'?':'';
-			config('root_path',$_POST['root_path']);
+			config('root_path', $_POST['root_path']);
 		}
+
 		$config = config('@base');
-		return view::load('settings')->with('config', $config);
+
+		return view::load('settings')->with('config', $config)->with('message', $message);
+	}
+
+	/**
+	 * 判断缓存类型
+	 *
+	 * @param string $cache_type 缓存类型
+	 * @return void
+	 */
+	function cache_exists($cache_type){
+		// 需要判断环境的缓存类型
+		$_cache_type = [
+			'redis',
+			'memcache',
+		];
+
+		if (in_array($cache_type, $_cache_type)) {
+			return class_exists(ucfirst($cache_type));
+		}
+
+		return true;
 	}
 
 	function cache(){
 		if(!is_null($_POST['clear'])){
-			$dir=opendir(CACHE_PATH);
-			while ($file=readdir($dir)) {
-				@unlink(CACHE_PATH.$file);
-			}
+			cache::clear();
 			$message = "清除缓存成功";
 		}elseif ( !is_null($_POST['refresh']) ){
-			set_time_limit(0);
-			self::_refresh_cache(get_absolute_path(config('onedrive_root')));
+			oneindex::refresh_cache(get_absolute_path(config('onedrive_root')));
 			$message = "重建缓存成功";
 		}
 		return view::load('cache')->with('message', $message);
@@ -82,17 +109,6 @@ class AdminController{
 		return view::load('images')->with('config', $config);;
 	}
 
-	static function _refresh_cache($path){
-		$items = onedrive::dir($path);
-		if(is_array($items)){
-			cache('dir_'.$path, $items);
-		}
-		foreach((array)$items as $item){
-		    if($item['folder']){
-		        self::_refresh_cache($path.$item['name'].'/');
-		    }
-		}
-	}
 
 	function show(){
 		if(!empty($_POST) ){
@@ -146,7 +162,7 @@ class AdminController{
 	}
 
 	function install_0(){
-		$check['php'] = version_compare(PHP_VERSION,'5.6.0','ge');
+		$check['php'] = version_compare(PHP_VERSION,'5.5.0','ge');
 		$check['curl'] = function_exists('curl_init');
 		$check['config'] = is_writable(ROOT.'config/');
 		$check['cache'] = is_writable(ROOT.'cache/');
@@ -163,10 +179,7 @@ class AdminController{
 			config('redirect_uri',$_POST['redirect_uri']);
 			return view::direct('?step=2');
 		}
-		$https = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'));
-		if($https){
-			$redirect_uri = 'https://'.$_SERVER['HTTP_HOST'].get_absolute_path(dirname($_SERVER['PHP_SELF']));
-		}elseif($_SERVER['HTTP_HOST'] == 'localhost'){
+		if($_SERVER['HTTP_HOST'] == 'localhost'){
 			$redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].get_absolute_path(dirname($_SERVER['PHP_SELF']));
 		}else{
 			// 非https,调用ju.tn中转

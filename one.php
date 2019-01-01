@@ -7,27 +7,11 @@ ini_set('memory_limit', '128M');
 
 class one{
 	static function cache_clear(){
-		$dir=opendir(CACHE_PATH);
-		while ($file=readdir($dir)) {
-			@unlink(CACHE_PATH.$file);
-		}
+		cache::clear();
 	}
 
 	static function cache_refresh(){
-		self::_refresh_cache(get_absolute_path(config('onedrive_root')));
-	}
-
-	static function _refresh_cache($path){
-		echo $path.PHP_EOL;
-		$items = onedrive::dir($path);
-		if(is_array($items)){
-			cache('dir_'.$path, $items);
-		}
-		foreach((array)$items as $item){
-		    if($item['folder']){
-		        self::_refresh_cache($path.$item['name'].'/');
-		    }
-		}
+		oneindex::refresh_cache(get_absolute_path(config('onedrive_root')));
 	}
 
 	static function token_refresh(){
@@ -177,13 +161,14 @@ class one{
 		}else{
 			print ' 失败!'.PHP_EOL;
 			$data = onedrive::upload_session_status($info['url']);
-			if(empty($data)){
+			if(empty($data)|| $info['length']<100){
 				onedrive::delete_upload_session($info['url']);
 				unset($upload[$remotepath]);
 				config('@upload', $upload);
 			}elseif(!empty($data['nextExpectedRanges'])){
 				list($offset, $filesize) = explode('-',$data['nextExpectedRanges'][0]);
 				$info['offset'] = $offset;
+				$info['length'] = $info['length']/1.5;
 				$upload[$remotepath] = $info;
 				config('@upload', $upload);
 			}

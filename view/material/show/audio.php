@@ -1,11 +1,12 @@
 <?php view::layout('layout')?>
 
 <?php view::begin('content');?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 <script src="<?php e($root);?>view/js/qrcode.min.js"></script>
 <div class="mdui-container-fluid">
 	<br>
 	<center>
-	<audio src="<?php e($item['downloadUrl']);?>" controls autoplay style="width: 100%;"  poster="<?php @e($item['thumb'].'&width=176&height=176');?>">
+	<div id="aplayer"></div>
 	</audio>
 	</center>
 	<br>
@@ -24,7 +25,17 @@
 	</div>
 </div>
 <a href="<?php e($url);?>" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
 <script>
+const ap = new APlayer({
+    container: document.getElementById('aplayer'),
+    audio: [{
+        name: '<?php e(pathinfo($item["name"], PATHINFO_FILENAME)); ?>',
+        artist: 'Oneindex Preview',
+        url: '<?php e($item['downloadUrl']);?>',
+        cover: '<?php e( !empty($item['thumb'] ) ? $item['thumb'].'&width=176&height=176' : null);?>'
+    }]
+});
 var qrcode = new QRCode(document.getElementById("qrcode"), {
 	width: "200",
 	height: "200",
@@ -33,4 +44,5 @@ var qrcode = new QRCode(document.getElementById("qrcode"), {
 });
 qrcode.makeCode("<?php e($url);?>");
 </script>
+
 <?php view::end('content');?>
